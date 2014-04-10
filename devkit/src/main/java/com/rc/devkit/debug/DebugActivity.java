@@ -164,7 +164,7 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
 		
 		if (shouldStartManually(runOption)) {
 			showProgressBarWithMessage("Waiting to start manually!");
-			startManually(proceed);
+			startManually(runOption, proceed);
 		}
 		else {
 			proceed.proceed();
@@ -182,7 +182,7 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
     }
 
     public abstract boolean shouldStartManually(DebugRunOption option);
-    public abstract void startManually(DebugProceed proceed);
+    public abstract void startManually(DebugRunOption option, DebugProceed proceed);
     public abstract void delayedPostStartRunOption(DebugRunOption option);
 
     /**

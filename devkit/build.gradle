@@ -1,6 +1,7 @@
 apply plugin: 'android-library'
 
 android {
+
     compileSdkVersion 19
     buildToolsVersion "19.0.3"
 
@@ -8,7 +9,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -16,6 +17,31 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    sourceSets {
+        main  {
+            java {
+                srcDir 'src/main/java'
+            }
+        }
+    }
+}
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+    if (name.equals(com.android.builder.BuilderConstants.DEBUG)) {
+        return; // Skip debug builds.
+    }
+
+    def task = project.tasks.create "jar${name.capitalize()}", Jar
+    task.dependsOn variant.javaCompile
+    task.from variant.javaCompile.destinationDir
+    artifacts.add('archives', task);
+
+    def versionCode = android.defaultConfig.versionName
+    def libName = "${variant.buildType.name}-v${versionCode}"
+    logger.info("Library name: ${libName}")
+    def library = variant.outputFile
+    variant.outputFile = new File(library.parentFile, libName)
 }
 
 dependencies {

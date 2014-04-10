@@ -10,12 +10,11 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.rc.devkit.utilities.Registry;
-import com.rc.devkit.utilities.penny.PennyCore.HandleType;
 
 public class PennyConfig 
 {	
 	protected String LOG_TAG;
-	protected HandleType defaultHandleType;
+	protected PennyCore.HandleType defaultHandleType;
 	protected String logFileName;
 	protected int toastLength;
 	protected File logFile;
@@ -25,10 +24,10 @@ public class PennyConfig
         logFileName = "ERROR_HANDLE_LOG_FILE.log";
         toastLength = Toast.LENGTH_SHORT;
         logFile = null;
-        defaultHandleType = HandleType.LOG;
+        defaultHandleType = PennyCore.HandleType.LOG;
     }
 
-    public PennyConfig(String logTag, HandleType defaultHandleType, String logFileName, int toastLength)
+    public PennyConfig(String logTag, PennyCore.HandleType defaultHandleType, String logFileName, int toastLength)
     {
         this.LOG_TAG = logTag;
         this.defaultHandleType = defaultHandleType;

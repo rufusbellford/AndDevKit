@@ -1,6 +1,6 @@
 package com.rc.devkit.utilities;
 
-import com.rc.devkit.utilities.penny.Penny;
+import com.rc.devkit.penny.Penny;
 
 import android.content.Context;
 import android.widget.Toast;
