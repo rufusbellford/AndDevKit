@@ -29,6 +29,10 @@ public class Penny extends PennyCore
         config = new PennyConfig(LOG_TAG, defaultHandleType, logFileName, toastLength);
     }
 
+    public void setDefaultHandleType(HandleType defaultHandleType)
+    {
+        config.defaultHandleType = defaultHandleType;
+    }
     
     public void printMethod()
     {
@@ -51,7 +55,17 @@ public class Penny extends PennyCore
     {
     	build().appendMessage(message).type(type).show();
     }
-    
+
+    public void presentMessage(String message, MessageFeel messageFeel)
+    {
+        build().appendMessage(message).feel(messageFeel).show();
+    }
+
+    public void presentMessage(String message, MessageFeel messageFeel, HandleType type)
+    {
+        build().appendMessage(message).feel(messageFeel).type(type).show();
+    }
+
     public Message present()
     {
     	return build();

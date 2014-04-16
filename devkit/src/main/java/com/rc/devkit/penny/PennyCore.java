@@ -17,28 +17,28 @@ import com.rc.devkit.utilities.Strings;
 public class PennyCore 
 {
     protected PennyConfig config;
-    private CustomHandlerCallback customCallback;
+    private PennyMessagePresenterDelegate messagePresenterDelegate;
     
-    public void setCustomCallback(CustomHandlerCallback customCallback) {
-		this.customCallback = customCallback;
+    public void setMessagePresenterDelegate(PennyMessagePresenterDelegate messagePresenterDelegate) {
+		this.messagePresenterDelegate = messagePresenterDelegate;
 	}
 
 	protected Message build()
     {
     	return Message.build(this);
     }
-   
-	public void displayLog(String message)
+
+    protected void displayLog(String message)
     {
         Log.e(config.LOG_TAG, message);
     }
 
-	public void displayToast(String message)
+    protected void displayToast(String message)
     {
         Toast.makeText(Registry.getInstance().getApplicationContext(), message, config.toastLength).show();
     }
 
-	public void displayAlert(String title, String message)
+    protected void displayAlert(String title, String message)
     {
         new AlertDialog.Builder(Registry.getInstance().getApplicationContext())
                 .setTitle(title)
@@ -50,16 +50,16 @@ public class PennyCore
                 }).show();
     }
     
-	public void customCallback(String title, String message)
+	protected void customCallback(String title, String message, MessageFeel messageFeel)
     {
-    	if (customCallback == null) {
+    	if (messagePresenterDelegate == null) {
 			throw new RuntimeException("You are trying to use custom callback, but you didn't specified one");
 		}
-    	
-    	customCallback.handleCallback(title, message);
+
+        messagePresenterDelegate.handleCallback(title, message, messageFeel);
     }
 
-	public void writeToFile(String message)
+    protected void writeToFile(String message)
     {
         if (config.logFile == null)
         {
@@ -77,6 +77,13 @@ public class PennyCore
             displayLog("Can't write file. " + e.getMessage());
         }
     }
+
+    public static enum MessageFeel
+    {
+        SUCCESS,
+        FAILURE,
+        NEUTRAL
+    }
     
     public static enum HandleType
     {
@@ -87,12 +94,7 @@ public class PennyCore
         TOAST,
         CUSTOM
     }
-    
-    public static interface CustomHandlerCallback
-    {
-    	public void handleCallback(String title, String message);
-    }
-    
+
     public static class Message
     {
     	private PennyCore core;
@@ -100,6 +102,7 @@ public class PennyCore
     	private String prefix;
     	private String message;
     	private String postfix;
+        private MessageFeel messageFeel;
     	private HandleType type;
     	
     	public static Message build(PennyCore core)
@@ -111,6 +114,7 @@ public class PennyCore
     		message.prefix = "";
     		message.postfix = "";
     		message.message = "";
+            message.messageFeel = MessageFeel.NEUTRAL;
     		return message;
     	}
     	
@@ -126,7 +130,28 @@ public class PennyCore
             prefix = simpleDateFormat.format(date) + "#" + prefix;
     		return this;
     	}
-    	
+
+        public Message itIsNeutralMessage()
+        {
+            return feel(MessageFeel.NEUTRAL);
+        }
+
+        public Message itIsFailMessage()
+        {
+            return feel(MessageFeel.FAILURE);
+        }
+
+        public Message itIsSuccessMessage()
+        {
+            return feel(MessageFeel.SUCCESS);
+        }
+
+        public Message feel(MessageFeel messageFeel)
+        {
+            this.messageFeel = messageFeel;
+            return this;
+        }
+
     	public Message appendNowDate() {
     		Date date = new Date();
     		return appendDate(date);
@@ -173,7 +198,7 @@ public class PennyCore
                     break;
                     
                 case CUSTOM:
-                	core.customCallback(title, prepareMessageOnly());
+                	core.customCallback(title, prepareMessageOnly(), messageFeel);
                     break;
                     
                 case NOTHING:
