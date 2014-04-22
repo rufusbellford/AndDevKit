@@ -78,23 +78,6 @@ public class PennyCore
         }
     }
 
-    public static enum MessageFeel
-    {
-        SUCCESS,
-        FAILURE,
-        NEUTRAL
-    }
-    
-    public static enum HandleType
-    {
-        LOG,
-        NOTHING,
-        FILE,
-        ALERT,
-        TOAST,
-        CUSTOM
-    }
-
     public static class Message
     {
     	private PennyCore core;

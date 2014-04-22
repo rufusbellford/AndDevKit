@@ -1,9 +1,10 @@
 package com.rc.devkit.utilities;
 
-import com.rc.devkit.penny.Penny;
-
 import android.content.Context;
 import android.widget.Toast;
+
+import com.rc.devkit.penny.HandleType;
+import com.rc.devkit.penny.Penny;
 
 public class Registry
 {
@@ -52,7 +53,7 @@ public class Registry
 
     public void init()
     {
-        Penny.instance().configure(Penny.HandleType.TOAST, "APP", "Default.log", Toast.LENGTH_SHORT);
+        Penny.instance().configure(HandleType.TOAST, "APP", "Default.log", Toast.LENGTH_SHORT);
     }
 
     public Context getApplicationContext()

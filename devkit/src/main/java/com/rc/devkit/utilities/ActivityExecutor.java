@@ -15,9 +15,9 @@ public class ActivityExecutor
     private boolean startForResult = false;
     private int newIntentRequestCode = -1;
     private Class<?> activityClassToRun = null;
-    private Activity activityToRunFrom = null;
+    protected Activity activityToRunFrom = null;
 
-    private ActivityExecutor(Activity activity)
+    protected ActivityExecutor(Activity activity)
     {
         this.activityToRunFrom = activity;
     }

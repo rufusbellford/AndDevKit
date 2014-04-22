@@ -5,5 +5,5 @@ package com.rc.devkit.penny;
  */
 public interface PennyMessagePresenterDelegate
 {
-    public void handleCallback(String title, String message, PennyCore.MessageFeel messageFeel);
+    public void handleCallback(String title, String message, MessageFeel messageFeel);
 }
