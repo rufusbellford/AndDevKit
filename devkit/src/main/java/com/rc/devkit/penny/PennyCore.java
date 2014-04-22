@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -83,7 +85,7 @@ public class PennyCore
     	private PennyCore core;
     	private String title;
     	private String prefix;
-    	private String message;
+    	private List<String> messageList;
     	private String postfix;
         private MessageFeel messageFeel;
     	private HandleType type;
@@ -96,7 +98,7 @@ public class PennyCore
     		message.title = "";
     		message.prefix = "";
     		message.postfix = "";
-    		message.message = "";
+    		message.messageList = new ArrayList<String>();
             message.messageFeel = MessageFeel.NEUTRAL;
     		return message;
     	}
@@ -110,7 +112,7 @@ public class PennyCore
     	public Message appendDate(Date date) 
     	{
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
-            prefix = simpleDateFormat.format(date) + "#" + prefix;
+            prefix = simpleDateFormat.format(date) + "# " + prefix;
     		return this;
     	}
 
@@ -146,7 +148,7 @@ public class PennyCore
     	}
     	
     	public Message appendMessage(String newMessage) {
-    		message += newMessage;
+    		messageList.add(newMessage);
     		return this;
     	}
 
@@ -160,7 +162,7 @@ public class PennyCore
     		return this;
     	}
     	
-        protected void show()
+        public void show()
         {
             switch (type) 
             {
@@ -216,8 +218,21 @@ public class PennyCore
         
         private String prepareMessageOnly()
         {
-        	String messageOnly = prefix + " " + message + " " + postfix;
-        	return messageOnly.trim();
+            StringBuilder builder = new StringBuilder(prefix + " ");
+
+            for (int i = 0 ; i < messageList.size() ; i++)
+            {
+                if (i != 0) {
+                    builder.append(", ");
+                }
+
+                String message = messageList.get(i);
+                builder.append(message);
+            }
+
+            builder.append(" " + postfix);
+
+        	return builder.toString().trim();
         }
     }
 }

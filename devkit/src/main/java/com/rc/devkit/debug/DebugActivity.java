@@ -68,7 +68,8 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
         if (indexToRun < 0) {
             initViewWithRunOptions();
         }
-        else {
+        else
+        {
             if (indexToRun >= groupOfRunOptions.size()) {
                 throw new RuntimeException("Index exceeds bounds of passed DebugRunOptions");
             }
@@ -92,7 +93,7 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
     {
         DebugRunOption runOption = (DebugRunOption) adapterView.getAdapter().getItem(i);
-        startRunOption(runOption);
+        startRunOption(runOption, false);
     }
 
     public void register(DebugRunOption runOption)
@@ -108,13 +109,12 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
 
     private void startRunOptionWithExit(DebugRunOption runOption)
     {
-        startRunOption(runOption);
-        this.finish();
+        startRunOption(runOption, true);
     }
 
     public abstract void onPreStartRunOption(DebugRunOption option);
 
-    private void startRunOption(final DebugRunOption runOption)
+    private void startRunOption(final DebugRunOption runOption, final boolean shouldExitOnComplete)
     {
     	// PRE START
         onPreStartRunOption(runOption);
@@ -144,7 +144,7 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
 		            fragmentBundle.putSerializable(DebugFragmentActivity.FRAGMENT_CLASS_TAG, runClass);
 		            Activities.startActivity(DebugActivity.this, DebugFragmentActivity.class, fragmentBundle);
 		        }
-		        
+
 		        // POST START
 		        new Handler().postDelayed(new Runnable()
 		        {
@@ -154,11 +154,14 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
 		                delayedPostStartRunOption(runOption);
 		            }
 		        }, POST_DELAY_TIME);
+
+                executeExitOnComplete(shouldExitOnComplete);
 			}
 
 			@Override
 			public void failed() {
 				hideProgressBar();
+                executeExitOnComplete(shouldExitOnComplete);
 			}
 		};
 		
@@ -169,6 +172,14 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
 		else {
 			proceed.proceed();
 		}
+    }
+
+    private void executeExitOnComplete(boolean shouldExitOnComplete)
+    {
+        if (shouldExitOnComplete)
+        {
+            this.finish();
+        }
     }
 
     private void deployActivity(@SuppressWarnings("rawtypes") Class runClass, Bundle extras)
