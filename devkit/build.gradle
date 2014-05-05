@@ -32,16 +32,18 @@ android.libraryVariants.all { variant ->
         return; // Skip debug builds.
     }
 
+    def versionCode = android.defaultConfig.versionName
+    def libName = "${variant.buildType.name}-v${versionCode}.jar"
+    logger.info("Version: ${libName}")
+    def library = variant.outputFile
+    File file = new File(library.parentFile, libName)
+    logger.info("File path: ${file.absolutePath}")
+    variant.outputFile = file
+
     def task = project.tasks.create "jar${name.capitalize()}", Jar
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
     artifacts.add('archives', task);
-
-    def versionCode = android.defaultConfig.versionName
-    def libName = "${variant.buildType.name}-v${versionCode}"
-    logger.info("Library name: ${libName}")
-    def library = variant.outputFile
-    variant.outputFile = new File(library.parentFile, libName)
 }
 
 dependencies {
