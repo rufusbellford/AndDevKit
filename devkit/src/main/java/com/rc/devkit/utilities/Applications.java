@@ -60,4 +60,21 @@ public class Applications
 
         return debuggable;
     }
+
+    public static String versionName(Context context)
+    {
+        String version = null;
+
+        try
+        {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionName;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return version;
+    }
 }
