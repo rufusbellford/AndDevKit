@@ -74,6 +74,18 @@ public class RelativeDate extends Date
         return calendar.getTime();
     }
 
+    public static int daysDifference(Date firstDate, Date secondDate)
+    {
+        return daysDifference(firstDate.getTime(), secondDate.getTime());
+    }
+
+    public static int daysDifference(long firstDateTime, long secondDateTime)
+    {
+        long day = 1000 * 60 * 60 * 24;
+        long diff = secondDateTime - firstDateTime;
+        return (int)(diff / day);
+    }
+
     //================================================================================
     // Private Methods
     //================================================================================
