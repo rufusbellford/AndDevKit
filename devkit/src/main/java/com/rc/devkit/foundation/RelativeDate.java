@@ -30,7 +30,7 @@ public class RelativeDate extends Date
      */
     public String daysFromNowText()
     {
-        long day = 1000 * 60 * 60 * 24;
+        long day =  86400000; // 1000 * 60 * 60 * 24;
         Date currentZeroedDate = copyOnlyDate(Calendar.getInstance()).getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(this);
@@ -81,7 +81,7 @@ public class RelativeDate extends Date
 
     public static int daysDifference(long firstDateTime, long secondDateTime)
     {
-        long day = 1000 * 60 * 60 * 24;
+        long day =  86400000; // 1000 * 60 * 60 * 24;
         long diff = secondDateTime - firstDateTime;
         return (int)(diff / day);
     }
