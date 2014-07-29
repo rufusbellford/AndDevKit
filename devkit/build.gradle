@@ -2,12 +2,12 @@ apply plugin: 'android-library'
 
 android {
 
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0.0"
     }
@@ -28,9 +28,9 @@ android {
 
 android.libraryVariants.all { variant ->
     def name = variant.buildType.name
-    if (name.equals(com.android.builder.BuilderConstants.DEBUG)) {
-        return; // Skip debug builds.
-    }
+//    if (name.equals(com.android.builder.BuilderConstants.DEBUG)) {
+//        return; // Skip debug builds.
+//    }
 
     def versionCode = android.defaultConfig.versionName
     def libName = "${variant.buildType.name}-v${versionCode}.jar"

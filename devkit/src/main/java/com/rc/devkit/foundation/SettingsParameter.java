@@ -20,6 +20,34 @@ public abstract class SettingsParameter implements Serializable
         editor.commit();
     }
 
+    protected void saveString(String tag, String value)
+    {
+        String newTag = tag + getSuffix();
+        SharedPreferences.Editor editor = preferences().edit();
+        editor.putString(newTag, value);
+        editor.commit();
+    }
+
+    protected String readString(String tag, String defaultValue)
+    {
+        String newTag = tag + getSuffix();
+        return preferences().getString(newTag, defaultValue);
+    }
+
+    protected void saveInteger(String tag, Integer value)
+    {
+        String newTag = tag + getSuffix();
+        SharedPreferences.Editor editor = preferences().edit();
+        editor.putInt(newTag, value);
+        editor.commit();
+    }
+
+    protected Integer readInteger(String tag, Integer defaultValue)
+    {
+        String newTag = tag + getSuffix();
+        return preferences().getInt(newTag, defaultValue);
+    }
+
     protected Boolean readBool(String tag, Boolean defaultValue)
     {
         String newTag = tag + getSuffix();
