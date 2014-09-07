@@ -20,6 +20,8 @@ public class RelativeDate extends Date
         super(milliseconds);
     }
 
+
+
     //================================================================================
     // Public Methods
     //================================================================================
@@ -64,14 +66,32 @@ public class RelativeDate extends Date
      * @param days number of days from current date represented by this object.
      * @return Object of Date
      */
-    public Date daysFrom(int days)
+    public RelativeDate daysFrom(int days)
     {
         // TODO: Fixed for year changing
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(this);
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
         calendar.set(Calendar.DAY_OF_YEAR, dayOfYear + days);
-        return calendar.getTime();
+        return new RelativeDate(calendar.getTime().getTime());
+    }
+
+    public RelativeDate hoursFrom(int additionalHours)
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(this);
+        int currentHour = calendar.get(Calendar.HOUR);
+        calendar.set(Calendar.HOUR, currentHour + additionalHours);
+        return new RelativeDate(calendar.getTime().getTime());
+    }
+
+    public RelativeDate minutesFrom(int additionalMinutes)
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(this);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+        calendar.set(Calendar.MINUTE, currentMinute + additionalMinutes);
+        return new RelativeDate(calendar.getTime().getTime());
     }
 
     public static int daysDifference(Date firstDate, Date secondDate)

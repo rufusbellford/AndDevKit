@@ -48,6 +48,20 @@ public abstract class SettingsParameter implements Serializable
         return preferences().getInt(newTag, defaultValue);
     }
 
+    protected void saveLong(String tag, Long value)
+    {
+        String newTag = tag + getSuffix();
+        SharedPreferences.Editor editor = preferences().edit();
+        editor.putLong(newTag, value);
+        editor.commit();
+    }
+
+    protected Long readLong(String tag, Long defaultValue)
+    {
+        String newTag = tag + getSuffix();
+        return preferences().getLong(newTag, defaultValue);
+    }
+
     protected Boolean readBool(String tag, Boolean defaultValue)
     {
         String newTag = tag + getSuffix();
