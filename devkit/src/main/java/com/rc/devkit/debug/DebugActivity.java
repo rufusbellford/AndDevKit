@@ -61,7 +61,7 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
     {
         groupOfRunOptions = new ArrayList<DebugRunOption>();
         groupMap = new HashMap<DebugRunOption, String>();
-        initRunOptions();
+        registerRunOptions();
 
         int indexToRun = runOnStartOptionOnIndex();
 
@@ -199,12 +199,11 @@ public abstract class DebugActivity extends Activity implements AdapterView.OnIt
     /**
      *  Use register methods to init these screens
      */
-    public abstract void initRunOptions();
-    // TODO: Refactor to registerRunOptions();
+    public abstract void registerRunOptions();
 
     /**
      * Return index of Option to run.
-     * Index is specified in order which was added in initRunOptions() method.
+     * Index is specified in order which was added in registerRunOptions() method.
      * Pass value below 0 (< 0) to start DebugActivity with options displayed on screen
      *
      * @return

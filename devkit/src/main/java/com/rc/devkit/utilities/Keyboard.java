@@ -8,8 +8,7 @@ public class Keyboard
 {
     public static void showKeyboard(final EditText editText)
     {
-        Context context = Registry.getInstance().getApplicationContext();
-        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         editText.postDelayed(new Runnable()
         {
             @Override
@@ -22,8 +21,7 @@ public class Keyboard
 
     public static void hideKeyboard(final EditText editText)
     {
-        Context context = Registry.getInstance().getApplicationContext();
-        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }

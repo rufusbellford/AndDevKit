@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -32,21 +32,27 @@ android.libraryVariants.all { variant ->
 //        return; // Skip debug builds.
 //    }
 
-    def versionCode = android.defaultConfig.versionName
-    def libName = "${variant.buildType.name}-v${versionCode}.jar"
-    logger.info("Version: ${libName}")
-    def library = variant.outputFile
-    File file = new File(library.parentFile, libName)
-    logger.info("File path: ${file.absolutePath}")
-    variant.outputFile = file
+    variant.outputs.each { output ->
+        def outputFile = output.outputFile
+        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+            def versionCode = android.defaultConfig.versionName
+            def libName = "${variant.buildType.name}-v${versionCode}.jar"
+            logger.info("Version: ${libName}")
+            def library = variant.outputFile
+            File file = new File(library.parentFile, libName)
+            logger.info("File path: ${file.absolutePath}")
+            output.outputFile = new File(outputFile.parent, libName)
+        }
+    }
 
     def task = project.tasks.create "jar${name.capitalize()}", Jar
     task.dependsOn variant.javaCompile
     task.from variant.javaCompile.destinationDir
     artifacts.add('archives', task);
+
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.+'
+    compile 'com.android.support:appcompat-v7:20.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
